@@ -29,7 +29,7 @@ pipeline {
 
         stage('Levantar contenedor') {
             steps {
-                sh 'docker run -d -p 9091:8081 --name $CONTAINER_NAME $IMAGE_NAME'
+                sh 'docker run -d --network proyecto-azure_red-ms -p 9091:8081 --name $CONTAINER_NAME $IMAGE_NAME'
             }
         }
     }
