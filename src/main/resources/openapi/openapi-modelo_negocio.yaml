@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: MS Clientes API
+  description: API para la gestión de clientes
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8081
+
+paths:
+  /api/clientes:
+    get:
+      summary: Listar clientes
+      operationId: apiClientesGet
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+
+    post:
+      summary: Registrar un nuevo cliente
+      operationId: apiClientesPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInput'
+      responses:
+        '201':
+          description: Cliente creado correctamente
+
+  /api/clientes/{id}:
+    get:
+      summary: Obtener cliente por ID
+      operationId: apiClientesIdGet
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+
+    put:
+      summary: Actualizar cliente
+      operationId: apiClientesPut
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInput'
+      responses:
+        '200':
+          description: Cliente actualizado correctamente
+
+    delete:
+      summary: Eliminar cliente
+      operationId: apiClientesDelete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Cliente eliminado correctamente
+
+components:
+  schemas:
+
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+        cedula:
+          type: string
+          pattern: '^\d{10}$'
+          example: "1203456789"
+
+        nombre:
+          type: string
+
+        apellido:
+          type: string
+
+        edad:
+          type: integer
+          minimum: 18
+          example: 25
+
+        correo:
+          type: string
+          format: email
+
+        telefono:
+          type: string
+
+        direccion:
+          type: string
+
+        fechaRegistro:
+          type: string
+          format: date-time
+
+        estado:
+          type: string
+          enum:
+            - ACTIVO
+            - INACTIVO
+          example: ACTIVO
+
+
+    ClienteInput:
+      type: object
+      required:
+        - cedula
+        - nombre
+        - apellido
+        - edad
+        - correo
+        - telefono
+        - direccion
+        - estado
+      properties:
+
+        cedula:
+          type: string
+          pattern: '^\d{10}$'
+          example: "1203456789"
+
+        nombre:
+          type: string
+          example: Carlos
+
+        apellido:
+          type: string
+          example: Toreto
+
+        edad:
+          type: integer
+          minimum: 18
+          example: 25
+
+        correo:
+          type: string
+          format: email
+          example: carlos@gmail.com
+
+        telefono:
+          type: string
+          example: "0934567890"
+
+        direccion:
+          type: string
+          example: Quevedo - Los Ríos
+
+        estado:
+          type: string
+          enum:
+            - ACTIVO
+            - INACTIVO
+          example: ACTIVO
