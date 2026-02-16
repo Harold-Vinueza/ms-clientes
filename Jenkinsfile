@@ -29,7 +29,7 @@ pipeline {
 
         stage('Levantar contenedor') {
             steps {
-                sh 'docker run -d -p $PORT:8080 --name $CONTAINER_NAME $IMAGE_NAME'
+                sh sh 'docker run -d -p 9091:8081 --name $CONTAINER_NAME $IMAGE_NAME'
             }
         }
     }
