@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "ms-clientes"
         CONTAINER_NAME = "ms-clientes-container"
-        PORT = "8081"
+        PORT = "9091"
     }
 
     stages {
