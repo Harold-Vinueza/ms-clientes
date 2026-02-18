@@ -12,9 +12,11 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/Harold-Vinueza/ms-clientes.git'
+                git branch: 'main',
+                url: 'https://github.com/Harold-Vinueza/ms-clientes.git'
             }
         }
+
 
         stage('Build (Maven)') {
             steps {
