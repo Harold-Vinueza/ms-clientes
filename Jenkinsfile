@@ -2,34 +2,54 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "ms-clientes"
+        DOCKER_IMAGE = "harolitodocker/ms-clientes"
         CONTAINER_NAME = "ms-clientes-container"
         PORT = "9091"
+        NETWORK = "proyecto-azure_red-ms"
     }
 
     stages {
 
-        stage('Construir proyecto') {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/Harold-Vinueza/ms-clientes.git'
+            }
+        }
+
+        stage('Build (Maven)') {
             steps {
                 sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('Construir imagen Docker') {
+        stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker build -t $DOCKER_IMAGE:latest .'
             }
         }
 
-        stage('Eliminar contenedor anterior') {
+        stage('Login DockerHub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                }
+            }
+        }
+
+        stage('Push to DockerHub') {
+            steps {
+                sh 'docker push $DOCKER_IMAGE:latest'
+            }
+        }
+
+        stage('Deploy (Run Container)') {
             steps {
                 sh 'docker rm -f $CONTAINER_NAME || true'
-            }
-        }
-
-        stage('Levantar contenedor') {
-            steps {
-                sh 'docker run -d --network proyecto-azure_red-ms -p 9091:8081 --name $CONTAINER_NAME $IMAGE_NAME'
+                sh 'docker run -d --network $NETWORK -p $PORT:8081 --name $CONTAINER_NAME $DOCKER_IMAGE:latest'
             }
         }
     }
