@@ -41,7 +41,5 @@ jobs:
           key: ${{ secrets.AZURE_SSH_KEY }}
           script: |
             cd ~/proyecto-azure
-            docker compose down --remove-orphans
-            docker compose pull
-            docker compose up -d --force-recreate
-
+            docker compose -p ms-clientes pull
+            docker compose -p ms-clientes up -d
