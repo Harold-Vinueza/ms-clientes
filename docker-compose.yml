@@ -16,7 +16,7 @@ services:
     restart: always
 
   ms-clientes:
-    image: harolitodocker/ms-clientes:latest
+    image: ms-clientes:local
     container_name: ms-clientes
     ports:
       - "8081:8081"
