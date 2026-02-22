@@ -32,7 +32,7 @@ services:
 
 volumes:
   db_data:
-  name: ms-clientes_db_data
+    name: ms-clientes_db_data
 
 networks:
   red-ms:
