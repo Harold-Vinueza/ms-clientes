@@ -1,0 +1,64 @@
+name: Deploy to AKS (feature/kubernetes)
+
+on:
+  push:
+    branches: [ "feature/kubernetes" ]
+  workflow_dispatch:
+
+jobs:
+  build-push-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout del código
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+
+      - name: 3. Compilar con Maven
+        run: mvn clean package -DskipTests
+
+      - name: 4. Login en Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 5. Build y Push de Imagen Docker
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ms-clientes:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/ms-clientes:latest
+
+      - name: 6. Login a Azure (Service Principal)
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 7. Set context AKS
+        uses: azure/aks-set-context@v4
+        with:
+          resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          cluster-name: ${{ secrets.AZURE_CLUSTER_NAME }}
+
+      - name: 8. Deploy manifests a AKS
+        run: |
+          # Importante: NO aplicamos postgres-secret.yaml para no crear/romper secrets.
+          kubectl apply -n default -f k8s/postgres-pvc.yaml
+          kubectl apply -n default -f k8s/postgres-deployment.yaml
+          kubectl apply -n default -f k8s/postgres-service.yaml
+
+          kubectl apply -n default -f k8s/deployment.yaml
+          kubectl apply -n default -f k8s/service.yaml
+
+          kubectl rollout status -n default deployment/postgres
+          kubectl rollout status -n default deployment/ms-clientes
+
+      - name: 9. Estado final
+        run: |
+          kubectl get pods -n default
+          kubectl get svc -n default | egrep "postgres|ms-clientes" || true

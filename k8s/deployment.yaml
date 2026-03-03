@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-clientes
+  labels:
+    app: ms-clientes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-clientes
+  template:
+    metadata:
+      labels:
+        app: ms-clientes
+    spec:
+      containers:
+        - name: ms-clientes
+          image: harolitodocker/ms-clientes:latest
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8081
+
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/msclientes
+
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-postgres-secret
+                  key: username
+
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-postgres-secret
+                  key: password
+
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+
+
+            
