@@ -9,6 +9,8 @@ services:
       POSTGRES_USER: Harolito
       POSTGRES_PASSWORD: 1234
       TZ: America/Guayaquil
+    ports:
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
@@ -16,6 +18,9 @@ services:
     restart: always
 
   ms-clientes:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: ms-clientes:local
     container_name: ms-clientes
     ports:

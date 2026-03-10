@@ -8,7 +8,7 @@ import com.uteq.edu.ec.ms_clientes.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneOffset;
 import java.util.List;
@@ -53,12 +53,28 @@ public class ClienteApiController implements ApiApi {
     }
 
     // =========================
+    // GET /api/clientes/cedula/{cedula}
+    // ENDPOINT EXTRA PARA MICROSERVICIOS
+    // =========================
+    @GetMapping("/api/clientes/cedula/{cedula}")
+    public ResponseEntity<Cliente> buscarPorCedula(@PathVariable String cedula) {
+
+        var entity = service.buscarPorCedula(cedula);
+
+        if (entity == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(toApiModel(entity));
+    }
+
+    // =========================
     // POST /api/clientes
     // =========================
     @Override
     public ResponseEntity<Void> apiClientesPost(@Valid ClienteInput input) {
 
-        service.guardarCliente(toEntity(input));
+        service.guardarCliente(toEntity(input), false);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -82,7 +98,9 @@ public class ClienteApiController implements ApiApi {
         clienteDB.setDireccion(input.getDireccion());
         clienteDB.setEstado(input.getEstado().getValue());
 
-        service.guardarCliente(clienteDB);
+        boolean consumidorFinal = service.esConsumidorFinal(input.getCedula());
+
+        service.guardarCliente(clienteDB, consumidorFinal);
         return ResponseEntity.ok().build();
     }
 

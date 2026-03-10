@@ -1,518 +1,1003 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MS-Clientes</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-/* Probando Cambio en github */
-body{
-    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-    min-height:100vh;
-    padding:20px;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS-Clientes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-/* HEADER */
-.header{
-    background:white;
-    padding:20px;
-    border-radius:8px;
-    margin-bottom:25px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* LAYOUT */
-.container{
-    display:flex;
-    gap:25px;
-    flex-wrap:wrap;
-}
-
-.form-section,.table-section{
-    background:white;
-    padding:25px;
-    border-radius:8px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* 🔹 Reducimos un poco el formulario */
-.form-section{
-    flex:0.9;
-    min-width:280px;
-}
-
-/* 🔹 Damos más espacio a tabla */
-.table-section{
-    flex:2.1;
-    min-width:650px;
-}
-
-.table-wrapper{
-    overflow-x:auto;
-}
-
-/* FORM */
-label{
-    display:block;
-    margin-bottom:5px;
-    font-weight:500;
-}
-
-input,select{
-    width:100%;
-    padding:9px;
-    margin-bottom:14px;
-    border:1px solid #ddd;
-    border-radius:4px;
-    font-size:13px;
-}
-
-button{
-    padding:9px 18px;
-    background:#667eea;
-    color:white;
-    border:none;
-    border-radius:4px;
-    cursor:pointer;
-    font-size:13px;
-}
-
-button:hover{background:#5568d3;}
-
-.btn-limpiar{
-    padding:9px 18px;
-    background:#6c757d;
-    color:white;
-    text-decoration:none;
-    border-radius:4px;
-    font-size:13px;
-}
-
-/* TABLE */
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-thead{
-    background:#667eea;
-    color:white;
-}
-
-th,td{
-    padding:10px;
-    border-bottom:1px solid #ddd;
-    font-size:13px;
-    white-space:nowrap;
-}
-
-tbody tr:hover{
-    background:#f4f6ff;
-}
-
-/* ESTADO */
-.estado-form{
-    display:flex;
-    gap:5px;
-    align-items:center;
-}
-
-.estado-form select{
-    width:auto;
-    padding:5px;
-}
-
-/*  BOTONES ACCIONES CUADROS */
-.btn-edit{
-    display:inline-block;
-    background:#ff9800;
-    color:white;
-    padding:6px 12px;
-    border-radius:6px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:500;
-    margin-right:5px;
-}
-
-.btn-edit:hover{
-    background:#e68900;
-}
-
-.btn-delete{
-    display:inline-block;
-    background:#f44336;
-    color:white;
-    padding:6px 12px;
-    border-radius:6px;
-    text-decoration:none;
-    font-size:12px;
-    font-weight:500;
-}
-
-.btn-delete:hover{
-    background:#d32f2f;
-}
-
-/* ===== MODAL BONITO ===== */
-.modal-overlay{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.5);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    opacity:0;
-    visibility:hidden;
-    transition:all 0.3s ease;
-    z-index:1000;
-}
-
-.modal-overlay.active{
-    opacity:1;
-    visibility:visible;
-}
-
-.modal{
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    width:350px;
-    text-align:center;
-    transform:scale(0.8);
-    transition:all 0.3s ease;
-}
-
-.modal-overlay.active .modal{
-    transform:scale(1);
-}
-
-.modal h3{
-    margin-bottom:15px;
-}
-
-.modal p{
-    margin-bottom:20px;
-    font-size:14px;
-}
-
-.modal button{
-    width:100%;
-    background:#dc3545;
-}
-
-.modal.success button{
-    background:#28a745;
-}
-</style>
-
-<script>
-// =======================
-// VALIDACIONES DE TECLADO
-// =======================
-
-//Cédula / Edad: solo números
-function soloNumeros(e){
-    const key = e.key;
-
-    // permitir navegación y edición
-    const permitidos = ["Backspace","Delete","Tab","ArrowLeft","ArrowRight","Home","End"];
-    if (permitidos.includes(key)) return;
-
-    // permitir ctrl/cmd combos
-    if (e.ctrlKey || e.metaKey) return;
-
-    if(!/^[0-9]$/.test(key)){
-        e.preventDefault();
-    }
-}
-
-// Nombres / Apellidos: solo letras (con tildes) y espacios
-function soloLetras(e){
-    const key = e.key;
-
-    const permitidos = ["Backspace","Delete","Tab","ArrowLeft","ArrowRight","Home","End"];
-    if (permitidos.includes(key)) return;
-
-    if (e.ctrlKey || e.metaKey) return;
-
-    // letras + tildes + ñ + espacio
-    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]$/.test(key)){
-        e.preventDefault();
-    }
-}
-
-// Teléfono: números y opcional "+" SOLO al inicio
-function soloTelefono(e){
-    const input = e.target;
-    const key = e.key;
-
-    const permitidos = ["Backspace","Delete","Tab","ArrowLeft","ArrowRight","Home","End"];
-    if (permitidos.includes(key)) return;
-
-    if (e.ctrlKey || e.metaKey) return;
-
-    // permitir "+" solo si está al inicio y no existe ya
-    if(key === "+"){
-        const cursorAlInicio = (input.selectionStart === 0);
-        const noTieneMas = !input.value.includes("+");
-        if (cursorAlInicio && noTieneMas) return;
-        e.preventDefault();
-        return;
-    }
-
-    // permitir solo números
-    if(!/^[0-9]$/.test(key)){
-        e.preventDefault();
-    }
-}
-
-// Bloqueo al pegar (paste) para evitar letras/mezclas
-function limpiarPegadoSoloNumeros(e){
-    e.preventDefault();
-    const texto = (e.clipboardData || window.clipboardData).getData("text");
-    const limpio = texto.replace(/[^0-9]/g,"");
-    document.execCommand("insertText", false, limpio);
-}
-
-function limpiarPegadoSoloLetras(e){
-    e.preventDefault();
-    const texto = (e.clipboardData || window.clipboardData).getData("text");
-    const limpio = texto.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g,"");
-    document.execCommand("insertText", false, limpio);
-}
-
-function limpiarPegadoTelefono(e){
-    e.preventDefault();
-    const texto = (e.clipboardData || window.clipboardData).getData("text");
-
-    // permite solo números y un "+" si es el primer carácter
-    let limpio = texto.replace(/[^0-9+]/g,"");
-    // si tiene + en medio lo eliminamos
-    limpio = limpio.replace(/\+/g,"");
-    // si el texto original empezaba con +, lo agregamos al inicio
-    if(texto.trim().startsWith("+")){
-        limpio = "+" + limpio;
-    }
-    document.execCommand("insertText", false, limpio);
-}
-
-
-// =======================
-// VALIDACIÓN ECUADOR CÉDULA
-// =======================
-function validarCedula(cedula){
-    if(cedula.length !== 10) return false;
-
-    let total=0;
-    for(let i=0;i<9;i++){
-        let num=parseInt(cedula[i]);
-        if(i%2===0){
-            num*=2;
-            if(num>9) num-=9;
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
         }
-        total+=num;
-    }
 
-    let verificador=(10-(total%10))%10;
-    return verificador===parseInt(cedula[9]);
-}
+        body{
+            font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+            background:linear-gradient(135deg,#134e2a 0%,#1a7a4a 40%,#2dd4bf 100%);
+            min-height:100vh;
+            padding:30px 18px;
+            color:#1f2937;
+        }
 
-// =======================
-// MODAL
-// =======================
-function mostrarModal(titulo,mensaje,tipo="error"){
-    const overlay=document.getElementById("modalOverlay");
-    const modal=document.getElementById("modalBox");
+        .page{
+            max-width:1280px;
+            margin:0 auto;
+        }
 
-    modal.className="modal "+(tipo==="success"?"success":"");
-    document.getElementById("modalTitle").innerText=titulo;
-    document.getElementById("modalMessage").innerText=mensaje;
+        .header{
+            background:rgba(255,255,255,0.97);
+            border-radius:24px;
+            padding:24px 28px;
+            margin-bottom:24px;
+            box-shadow:0 18px 35px rgba(0,0,0,0.18);
+            display:flex;
+            align-items:center;
+            gap:18px;
+            border-top:5px solid #16a34a;
+        }
 
-    overlay.classList.add("active");
-}
+        .header-icon{
+            width:70px;
+            height:70px;
+            border-radius:22px;
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:28px;
+            box-shadow:0 12px 25px rgba(22,163,74,0.45);
+            flex-shrink:0;
+        }
 
-function cerrarModal(){
-    document.getElementById("modalOverlay").classList.remove("active");
-}
+        .header h1{
+            font-size:40px;
+            font-weight:800;
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
 
-// =======================
-// VALIDAR FORM
-// =======================
-function validarFormulario(){
-    let cedula=document.getElementById("cedula").value;
+        .main-grid{
+            display:grid;
+            grid-template-columns:430px 1fr;
+            gap:24px;
+            align-items:start;
+        }
 
-    if(!validarCedula(cedula)){
-        mostrarModal(
-            "Cédula inválida",
-            "La cédula ingresada no es válida. Verifique el número.",
-            "error"
-        );
-        return false;
-    }
+        .card{
+            background:rgba(255,255,255,0.97);
+            border-radius:24px;
+            padding:24px;
+            box-shadow:0 18px 35px rgba(0,0,0,0.15);
+        }
 
-    return true;
-}
-</script>
+        .card-head{
+            display:flex;
+            align-items:flex-start;
+            gap:12px;
+            margin-bottom:20px;
+        }
 
+        .card-icon{
+            width:48px;
+            height:48px;
+            border-radius:16px;
+            background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+            color:#16a34a;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:20px;
+            flex-shrink:0;
+        }
+
+        .card-head h3{
+            font-size:22px;
+            font-weight:800;
+            color:#111827;
+        }
+
+        .card-head p{
+            margin-top:4px;
+            font-size:13px;
+            color:#6b7280;
+            line-height:1.5;
+        }
+
+        .form-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:14px;
+        }
+
+        .field.full{
+            grid-column:1 / -1;
+        }
+
+        .label{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            font-size:14px;
+            font-weight:700;
+            color:#374151;
+            margin-bottom:8px;
+        }
+
+        .label i{
+            color:#059669;
+        }
+
+        input, select{
+            width:100%;
+            border:1px solid #d1d5db;
+            border-radius:15px;
+            padding:13px 14px;
+            font-size:14px;
+            background:#fff;
+            outline:none;
+            transition:all 0.25s ease;
+        }
+
+        input:focus, select:focus{
+            border-color:#16a34a;
+            box-shadow:0 0 0 4px rgba(22,163,74,0.15);
+        }
+
+        input[readonly]{
+            background:#f3f4f6;
+            color:#4b5563;
+        }
+
+        .search-inside{
+            margin-bottom:18px;
+            padding:16px;
+            border-radius:18px;
+            background:linear-gradient(135deg,#f0fdf4,#ecfdf5);
+            border:1px solid #86efac;
+        }
+
+        .search-actions{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:10px;
+            margin-top:12px;
+        }
+
+        .actions{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:12px;
+            margin-top:18px;
+        }
+
+        .btn{
+            border:none;
+            border-radius:15px;
+            padding:13px 18px;
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            cursor:pointer;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+            text-decoration:none;
+            transition:all 0.25s ease;
+        }
+
+        .btn:hover{
+            transform:translateY(-1px);
+        }
+
+        .btn-search{
+            background:linear-gradient(135deg,#0ea5e9,#06b6d4);
+        }
+
+        .btn-consumidor{
+            background:linear-gradient(135deg,#10b981,#34d399);
+        }
+
+        .btn-save{
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+        }
+
+        .btn-cancel{
+            background:linear-gradient(135deg,#64748b,#94a3b8);
+        }
+
+        .btn-search:hover{
+            box-shadow:0 10px 18px rgba(14,165,233,0.40);
+        }
+
+        .btn-consumidor:hover{
+            box-shadow:0 10px 18px rgba(16,185,129,0.35);
+        }
+
+        .btn-save:hover{
+            box-shadow:0 10px 18px rgba(232,67,147,0.40);
+        }
+
+        .form-success{
+            margin-bottom:18px;
+            padding:16px 18px;
+            border-radius:18px;
+            border:1px solid #86efac;
+            background:linear-gradient(135deg,#ecfdf5,#dcfce7);
+            color:#166534;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            font-size:14px;
+            font-weight:800;
+            box-shadow:0 10px 24px rgba(34,197,94,0.12);
+        }
+
+        .form-success i{
+            font-size:18px;
+        }
+
+        .result-empty{
+            border:2px dashed #86efac;
+            background:linear-gradient(135deg,#f0fdf4,#ecfdf5);
+            border-radius:20px;
+            padding:48px 26px;
+            text-align:center;
+        }
+
+        .result-empty i{
+            font-size:48px;
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text;
+            margin-bottom:14px;
+            display:block;
+        }
+
+        .result-empty h4{
+            font-size:32px;
+            color:#111827;
+            margin-bottom:10px;
+            font-weight:800;
+        }
+
+        .result-empty p{
+            color:#6b7280;
+            font-size:16px;
+            line-height:1.7;
+            max-width:760px;
+            margin:0 auto;
+        }
+
+        .result-box{
+            display:grid;
+            gap:18px;
+        }
+
+        .result-banner{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:14px 16px;
+            border-radius:16px;
+            font-weight:700;
+            font-size:14px;
+        }
+
+        .result-success{
+            background:linear-gradient(135deg,#ecfdf5,#dcfce7);
+            border:1px solid #a7f3d0;
+            color:#065f46;
+        }
+
+        .result-warning{
+            background:linear-gradient(135deg,#fff7ed,#fef3c7);
+            border:1px solid #fdba74;
+            color:#9a3412;
+        }
+
+        .result-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:14px;
+        }
+
+        .result-item{
+            background:linear-gradient(135deg,#f0fdf4,#f7fffe);
+            border:1px solid #bbf7d0;
+            border-radius:18px;
+            padding:15px 16px;
+        }
+
+        .result-item.full{
+            grid-column:1 / -1;
+        }
+
+        .result-label{
+            font-size:12px;
+            font-weight:800;
+            color:#059669;
+            text-transform:uppercase;
+            letter-spacing:.4px;
+            margin-bottom:7px;
+        }
+
+        .result-value{
+            font-size:16px;
+            font-weight:700;
+            color:#111827;
+            word-break:break-word;
+        }
+
+        .result-actions-panel{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+            margin-top:18px;
+        }
+
+        .result-actions-box{
+            background:linear-gradient(135deg,#f0fdf4,#ecfdf5);
+            border:1px solid #bbf7d0;
+            border-radius:18px;
+            padding:16px;
+        }
+
+        .result-actions-title{
+            font-size:14px;
+            font-weight:800;
+            color:#374151;
+            margin-bottom:12px;
+        }
+
+        .estado-form{
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+
+        .estado-form select{
+            flex:1;
+            min-width:0;
+        }
+
+        .btn-state{
+            min-width:56px;
+            padding:13px 16px;
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+            color:#fff;
+        }
+
+        .btn-edit{
+            background:linear-gradient(135deg,#f59e0b,#fbbf24);
+            color:#fff;
+            padding:12px 18px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:700;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 4px 12px rgba(245,158,11,0.30);
+            transition:all 0.25s ease;
+        }
+
+        .btn-edit:hover{
+            transform:translateY(-1px);
+            box-shadow:0 8px 18px rgba(245,158,11,0.40);
+        }
+
+        .btn-delete{
+            background:linear-gradient(135deg,#ef4444,#f43f5e);
+            color:#fff;
+            padding:12px 18px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:700;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 4px 12px rgba(239,68,68,0.30);
+            transition:all 0.25s ease;
+        }
+
+        .btn-delete:hover{
+            transform:translateY(-1px);
+            box-shadow:0 8px 18px rgba(239,68,68,0.40);
+        }
+
+        .acciones-botones{
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .modal-overlay{
+            position:fixed;
+            inset:0;
+            background:rgba(17,24,39,0.65);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            opacity:0;
+            visibility:hidden;
+            transition:all 0.3s ease;
+            z-index:1000;
+            padding:20px;
+        }
+
+        .modal-overlay.active{
+            opacity:1;
+            visibility:visible;
+        }
+
+        .modal{
+            width:100%;
+            max-width:430px;
+            background:#fff;
+            border-radius:22px;
+            padding:28px;
+            text-align:center;
+            transform:scale(0.92);
+            transition:all 0.3s ease;
+            box-shadow:0 24px 45px rgba(0,0,0,0.22);
+            border-top:5px solid #16a34a;
+        }
+
+        .modal-overlay.active .modal{
+            transform:scale(1);
+        }
+
+        .modal h3{
+            font-size:26px;
+            color:#111827;
+            margin-bottom:12px;
+        }
+
+        .modal p{
+            color:#4b5563;
+            line-height:1.7;
+            margin-bottom:18px;
+            font-size:15px;
+        }
+
+        .modal button{
+            width:100%;
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+        }
+
+        @media (max-width: 1100px){
+            .main-grid{
+                grid-template-columns:1fr;
+            }
+        }
+
+        @media (max-width: 700px){
+            .form-grid,
+            .result-grid,
+            .search-actions,
+            .actions,
+            .result-actions-panel{
+                grid-template-columns:1fr;
+            }
+
+            .header h1{
+                font-size:32px;
+            }
+
+            .result-empty h4{
+                font-size:24px;
+            }
+
+            .estado-form{
+                flex-direction:column;
+                align-items:stretch;
+            }
+
+            .btn-state{
+                width:100%;
+            }
+
+            .acciones-botones{
+                flex-direction:column;
+            }
+        }
+    </style>
+
+    <script>
+        function soloNumeros(e){
+            const key = e.key;
+            const permitidos = ["Backspace","Delete","Tab","ArrowLeft","ArrowRight","Home","End"];
+            if (permitidos.includes(key)) return;
+            if (e.ctrlKey || e.metaKey) return;
+            if(!/^[0-9]$/.test(key)){
+                e.preventDefault();
+            }
+        }
+
+        function soloLetras(e){
+            const key = e.key;
+            const permitidos = ["Backspace","Delete","Tab","ArrowLeft","ArrowRight","Home","End"];
+            if (permitidos.includes(key)) return;
+            if (e.ctrlKey || e.metaKey) return;
+            if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]$/.test(key)){
+                e.preventDefault();
+            }
+        }
+
+        function soloTelefono(e){
+            const key = e.key;
+            const permitidos = ["Backspace","Delete","Tab","ArrowLeft","ArrowRight","Home","End"];
+            if (permitidos.includes(key)) return;
+            if (e.ctrlKey || e.metaKey) return;
+            if(!/^[0-9]$/.test(key)){
+                e.preventDefault();
+            }
+        }
+
+        function limpiarPegadoSoloNumeros(e){
+            e.preventDefault();
+            const texto = (e.clipboardData || window.clipboardData).getData("text");
+            const limpio = texto.replace(/[^0-9]/g,"");
+            document.execCommand("insertText", false, limpio);
+        }
+
+        function limpiarPegadoSoloLetras(e){
+            e.preventDefault();
+            const texto = (e.clipboardData || window.clipboardData).getData("text");
+            const limpio = texto.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g,"");
+            document.execCommand("insertText", false, limpio);
+        }
+
+        function limpiarPegadoTelefono(e){
+            e.preventDefault();
+            const texto = (e.clipboardData || window.clipboardData).getData("text");
+            const limpio = texto.replace(/[^0-9]/g,"");
+            document.execCommand("insertText", false, limpio);
+        }
+
+        function validarCedula(cedula){
+            if(cedula.length !== 10) return false;
+
+            let total = 0;
+            for(let i = 0; i < 9; i++){
+                let num = parseInt(cedula[i]);
+                if(i % 2 === 0){
+                    num *= 2;
+                    if(num > 9) num -= 9;
+                }
+                total += num;
+            }
+
+            let verificador = (10 - (total % 10)) % 10;
+            return verificador === parseInt(cedula[9]);
+        }
+
+        function mostrarModal(titulo, mensaje){
+            const overlay = document.getElementById("modalOverlay");
+            document.getElementById("modalTitle").innerText = titulo;
+            document.getElementById("modalMessage").innerText = mensaje;
+            overlay.classList.add("active");
+        }
+
+        function cerrarModal(){
+            document.getElementById("modalOverlay").classList.remove("active");
+        }
+
+        function activarConsumidorFinal(){
+            document.getElementById("consumidorFinal").value = "true";
+            document.getElementById("cedula").value = "9999999999";
+            document.getElementById("nombre").value = "CONSUMIDOR";
+            document.getElementById("apellido").value = "FINAL";
+            document.getElementById("edad").value = "0";
+            document.getElementById("correo").value = "consumidor.final@na.ec";
+            document.getElementById("telefono").value = "0000000000";
+            document.getElementById("direccion").value = "NO REGISTRA";
+            document.getElementById("cedulaBusqueda").value = "9999999999";
+            bloquearCamposFormulario(true);
+        }
+
+        function bloquearCamposFormulario(bloquear){
+            const ids = ["cedula","nombre","apellido","edad","correo","telefono","direccion"];
+            ids.forEach(id => {
+                const campo = document.getElementById(id);
+                if(campo){
+                    campo.readOnly = bloquear;
+                }
+            });
+        }
+
+        function limpiarCamposFormulario(){
+            document.getElementById("cedula").value = "";
+            document.getElementById("nombre").value = "";
+            document.getElementById("apellido").value = "";
+            document.getElementById("edad").value = "";
+            document.getElementById("correo").value = "";
+            document.getElementById("telefono").value = "";
+            document.getElementById("direccion").value = "";
+        }
+
+        function limpiarFormularioCliente(){
+            document.getElementById("consumidorFinal").value = "false";
+            bloquearCamposFormulario(false);
+            limpiarCamposFormulario();
+        }
+
+        function validarFormulario(){
+            const cedula = document.getElementById("cedula").value.trim();
+            const consumidorFinal = document.getElementById("consumidorFinal").value === "true";
+
+            if(cedula === "9999999999" && !consumidorFinal){
+                mostrarModal(
+                    "Valor no permitido",
+                    "La cédula 9999999999 es exclusiva para Consumidor Final. Use el botón correspondiente."
+                );
+                return false;
+            }
+
+            if(!consumidorFinal){
+                if(!validarCedula(cedula)){
+                    mostrarModal(
+                        "Cédula inválida",
+                        "La cédula ingresada no es válida. Verifique el número."
+                    );
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function validarBusqueda(){
+            const cedula = document.getElementById("cedulaBusqueda").value.trim();
+
+            if(cedula.length !== 10){
+                mostrarModal(
+                    "Búsqueda inválida",
+                    "La cédula para búsqueda debe contener 10 dígitos."
+                );
+                return false;
+            }
+
+            if(cedula === "9999999999"){
+                mostrarModal(
+                    "Búsqueda no permitida",
+                    "La cédula 9999999999 corresponde a Consumidor Final. Use el botón Consumidor Final."
+                );
+                return false;
+            }
+
+            return true;
+        }
+
+        window.addEventListener("DOMContentLoaded", function(){
+            const consumidorFinal = document.getElementById("consumidorFinal");
+            const huboExito = document.getElementById("huboExito");
+            const esModoEdicion = document.getElementById("modoEdicion");
+            const huboClienteEncontrado = document.getElementById("huboClienteEncontrado");
+
+            if(consumidorFinal && consumidorFinal.value === "true"){
+                bloquearCamposFormulario(true);
+            } else {
+                bloquearCamposFormulario(false);
+            }
+
+            if(huboExito && huboExito.value === "true"){
+                limpiarFormularioCliente();
+                mostrarModal("Operación exitosa", "Cliente registrado o guardado correctamente.");
+            }
+
+            if(huboClienteEncontrado && huboClienteEncontrado.value === "true" &&
+               esModoEdicion && esModoEdicion.value === "false"){
+                limpiarFormularioCliente();
+            }
+        });
+    </script>
 </head>
-
 <body>
+<div class="page">
+    <div class="header">
+        <div class="header-icon">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+            <h1>Gestión de Clientes</h1>
+        </div>
+    </div>
 
-<div class="header">
-    <h2>Gestión de Clientes</h2>
+    <div class="main-grid">
+        <div class="card">
+            <div class="card-head">
+                <div class="card-icon">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div>
+                    <h3 th:text="${cliente.id == null ? 'Nuevo Cliente' : 'Editar Cliente'}"></h3>
+                    <p>Complete los datos del cliente solo si necesita registrarlo o editarlo.</p>
+                </div>
+            </div>
+
+            <input type="hidden" id="huboExito" th:value="${mensajeExito != null}">
+            <input type="hidden" id="modoEdicion" th:value="${cliente.id != null}">
+            <input type="hidden" id="huboClienteEncontrado" th:value="${clienteEncontrado != null}">
+
+            <div th:if="${mensajeExito != null}" class="form-success">
+                <i class="fa-solid fa-circle-check"></i>
+                <span th:text="${mensajeExito}"></span>
+            </div>
+
+            <div class="search-inside">
+                <form th:action="@{/clientes/web/buscar}" method="post" onsubmit="return validarBusqueda()">
+                    <label class="label" for="cedulaBusqueda">
+                        <i class="fa-solid fa-address-card"></i> Buscar cliente por cédula
+                    </label>
+
+                    <input type="text"
+                           id="cedulaBusqueda"
+                           name="cedulaBusqueda"
+                           maxlength="10"
+                           th:value="${cedulaBusqueda}"
+                           placeholder="Ingrese la cédula para buscar"
+                           onkeydown="soloNumeros(event)"
+                           onpaste="limpiarPegadoSoloNumeros(event)">
+
+                    <div class="search-actions">
+                        <button type="submit" class="btn btn-search">
+                            <i class="fa-solid fa-magnifying-glass"></i> Buscar Cliente
+                        </button>
+
+                        <button type="button" class="btn btn-consumidor" onclick="activarConsumidorFinal()">
+                            <i class="fa-solid fa-user-check"></i> Consumidor Final
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <form th:action="@{/clientes/web/guardar}" th:object="${cliente}" method="post" onsubmit="return validarFormulario()">
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" id="consumidorFinal" name="consumidorFinal" th:value="${cliente.cedula == '9999999999'} ? 'true' : 'false'"/>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="label" for="cedula">
+                            <i class="fa-solid fa-id-card"></i> Cédula
+                        </label>
+                        <input type="text"
+                               id="cedula"
+                               th:field="*{cedula}"
+                               maxlength="10"
+                               required
+                               placeholder="Ingrese la cédula"
+                               onkeydown="soloNumeros(event)"
+                               onpaste="limpiarPegadoSoloNumeros(event)">
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="edad">
+                            <i class="fa-solid fa-hashtag"></i> Edad
+                        </label>
+                        <input type="number"
+                               id="edad"
+                               th:field="*{edad}"
+                               min="0"
+                               required
+                               placeholder="Edad"
+                               onkeydown="soloNumeros(event)"
+                               onpaste="limpiarPegadoSoloNumeros(event)">
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="nombre">
+                            <i class="fa-solid fa-user"></i> Nombres
+                        </label>
+                        <input type="text"
+                               id="nombre"
+                               th:field="*{nombre}"
+                               required
+                               placeholder="Ingrese nombres"
+                               onkeydown="soloLetras(event)"
+                               onpaste="limpiarPegadoSoloLetras(event)">
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="apellido">
+                            <i class="fa-solid fa-user-tag"></i> Apellidos
+                        </label>
+                        <input type="text"
+                               id="apellido"
+                               th:field="*{apellido}"
+                               required
+                               placeholder="Ingrese apellidos"
+                               onkeydown="soloLetras(event)"
+                               onpaste="limpiarPegadoSoloLetras(event)">
+                    </div>
+
+                    <div class="field full">
+                        <label class="label" for="correo">
+                            <i class="fa-solid fa-envelope"></i> Correo
+                        </label>
+                        <input type="email"
+                               id="correo"
+                               th:field="*{correo}"
+                               required
+                               placeholder="Ingrese correo electrónico">
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="telefono">
+                            <i class="fa-solid fa-phone"></i> Celular - Teléfono
+                        </label>
+                        <input type="text"
+                               id="telefono"
+                               th:field="*{telefono}"
+                               maxlength="10"
+                               required
+                               placeholder="Ingrese teléfono"
+                               onkeydown="soloTelefono(event)"
+                               onpaste="limpiarPegadoTelefono(event)">
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="direccion">
+                            <i class="fa-solid fa-location-dot"></i> Dirección
+                        </label>
+                        <input type="text"
+                               id="direccion"
+                               th:field="*{direccion}"
+                               required
+                               placeholder="Ingrese dirección">
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar
+                    </button>
+
+                    <a th:href="@{/clientes/web}" class="btn btn-cancel" onclick="limpiarFormularioCliente()">
+                        <i class="fa-solid fa-rotate-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="card-head">
+                <div class="card-icon">
+                    <i class="fa-solid fa-address-card"></i>
+                </div>
+                <div>
+                    <h3>Resultado de búsqueda</h3>
+                </div>
+            </div>
+
+            <div th:if="${clienteEncontrado != null}" class="result-box">
+                <div class="result-banner result-success">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Cliente encontrado correctamente.</span>
+                </div>
+
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">ID</div>
+                        <div class="result-value" th:text="${clienteEncontrado.id}"></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">CÉDULA</div>
+                        <div class="result-value" th:text="${clienteEncontrado.cedula}"></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">NOMBRES</div>
+                        <div class="result-value" th:text="${clienteEncontrado.nombre}"></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">APELLIDOS</div>
+                        <div class="result-value" th:text="${clienteEncontrado.apellido}"></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">EDAD</div>
+                        <div class="result-value" th:text="${clienteEncontrado.edad}"></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">ESTADO</div>
+                        <div class="result-value" th:text="${clienteEncontrado.estado}"></div>
+                    </div>
+
+                    <div class="result-item full">
+                        <div class="result-label">CORREO</div>
+                        <div class="result-value" th:text="${clienteEncontrado.correo}"></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">CELULAR / TELÉFONO</div>
+                        <div class="result-value" th:text="${clienteEncontrado.telefono}"></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">FECHA DE REGISTRO</div>
+                        <div class="result-value"
+                             th:text="${#temporals.format(clienteEncontrado.fechaRegistro,'dd/MM/yyyy HH:mm')}"></div>
+                    </div>
+
+                    <div class="result-item full">
+                        <div class="result-label">DIRECCIÓN</div>
+                        <div class="result-value" th:text="${clienteEncontrado.direccion}"></div>
+                    </div>
+                </div>
+
+                <div class="result-actions-panel">
+                    <div class="result-actions-box">
+                        <div class="result-actions-title">Estado</div>
+                        <form th:action="@{/clientes/web/estado/{id}(id=${clienteEncontrado.id})}" method="post" class="estado-form">
+                            <select name="estado">
+                                <option value="ACTIVO" th:selected="${clienteEncontrado.estado == 'ACTIVO'}">ACTIVO</option>
+                                <option value="INACTIVO" th:selected="${clienteEncontrado.estado == 'INACTIVO'}">INACTIVO</option>
+                            </select>
+                            <button type="submit" class="btn btn-state">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="result-actions-box">
+                        <div class="result-actions-title">Acciones</div>
+                        <div class="acciones-botones">
+                            <a th:href="@{/clientes/web/editar/{id}(id=${clienteEncontrado.id})}" class="btn btn-edit">
+                                Editar
+                            </a>
+                            <a th:href="@{/clientes/web/eliminar/{id}(id=${clienteEncontrado.id})}"
+                               class="btn btn-delete"
+                               onclick="return confirm('¿Está seguro de eliminar este cliente?')">
+                                Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${clienteEncontrado == null and busquedaRealizada}" class="result-box">
+                <div class="result-banner result-warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span th:text="${mensajeBusqueda != null ? mensajeBusqueda : 'Cliente no encontrado.'}"></span>
+                </div>
+
+                <div class="result-empty">
+                    <i class="fa-solid fa-user-xmark"></i>
+                    <h4>Cliente no encontrado</h4>
+                    <p>La cédula consultada no existe en la base de datos. Puede registrar el cliente usando el formulario de la izquierda.</p>
+                </div>
+            </div>
+
+            <div th:if="${clienteEncontrado == null and !busquedaRealizada}" class="result-empty">
+                <i class="fa-solid fa-id-badge"></i>
+                <h4>Esperando búsqueda</h4>
+                <p>Ingrese una cédula para consultar la información del cliente.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="container">
-
-<!-- FORMULARIO -->
-<div class="form-section">
-<h3 th:text="${cliente.id == null ? 'Nuevo Cliente' : 'Editar Cliente'}"></h3>
-
-<form th:action="@{/clientes/web/guardar}"
-      th:object="${cliente}"
-      method="post"
-      onsubmit="return validarFormulario()">
-
-<input type="hidden" th:field="*{id}"/>
-
-<label>Cédula</label>
-<input type="text"
-       id="cedula"
-       th:field="*{cedula}"
-       maxlength="10"
-       required
-       onkeydown="soloNumeros(event)"
-       onpaste="limpiarPegadoSoloNumeros(event)">
-
-<label>Nombres</label>
-<input type="text"
-       th:field="*{nombre}"
-       required
-       onkeydown="soloLetras(event)"
-       onpaste="limpiarPegadoSoloLetras(event)">
-
-<label>Apellidos</label>
-<input type="text"
-       th:field="*{apellido}"
-       required
-       onkeydown="soloLetras(event)"
-       onpaste="limpiarPegadoSoloLetras(event)">
-
-<label>Edad</label>
-<input type="number"
-       th:field="*{edad}"
-       min="18"
-       required
-       onkeydown="soloNumeros(event)"
-       onpaste="limpiarPegadoSoloNumeros(event)">
-
-<label>Correo</label>
-<input type="email" th:field="*{correo}" required>
-
-<label>Celular - Teléfono</label>
-<input type="text"
-       th:field="*{telefono}"
-       required
-       onkeydown="soloTelefono(event)"
-       onpaste="limpiarPegadoTelefono(event)">
-
-<label>Dirección</label>
-<input type="text" th:field="*{direccion}" required>
-
-<button type="submit">Guardar</button>
-<a href="/clientes/web" class="btn-limpiar">Cancelar</a>
-
-</form>
-</div>
-
-<!-- TABLA -->
-<div class="table-section">
-<h3>Lista de Clientes</h3>
-
-<div class="table-wrapper">
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Cédula</th>
-<th>Nombres</th>
-<th>Apellidos</th>
-<th>Edad</th>
-<th>Correo</th>
-<th>Celular - Teléfono</th>
-<th>Dirección</th>
-<th>Fecha</th>
-<th>Estado</th>
-<th>Acciones</th>
-</tr>
-</thead>
-
-
-<tbody>
-<tr th:each="c : ${clientes}">
-<td th:text="${c.id}"></td>
-<td th:text="${c.cedula}"></td>
-<td th:text="${c.nombre}"></td>
-<td th:text="${c.apellido}"></td>
-<td th:text="${c.edad}"></td>
-<td th:text="${c.correo}"></td>
-<td th:text="${c.telefono}"></td>
-<td th:text="${c.direccion}"></td>
-<td th:text="${#temporals.format(c.fechaRegistro,'dd/MM/yyyy HH:mm')}"></td>
-
-<td>
-<form th:action="@{/clientes/web/estado/{id}(id=${c.id})}"
-      method="post"
-      class="estado-form">
-<select name="estado">
-<option value="ACTIVO"
- th:selected="${c.estado == 'ACTIVO'}">ACTIVO</option>
-<option value="INACTIVO"
- th:selected="${c.estado == 'INACTIVO'}">INACTIVO</option>
-</select>
-<button type="submit">✔</button>
-</form>
-</td>
-
-<td>
-<a class="btn-edit"
-   th:href="@{/clientes/web/editar/{id}(id=${c.id})}">
-   Editar
-</a>
-
-<a class="btn-delete"
-   th:href="@{/clientes/web/eliminar/{id}(id=${c.id})}"
-   onclick="return confirm('¿Eliminar cliente?')">
-   Eliminar
-</a>
-</td>
-
-</tr>
-</tbody>
-</table>
-</div>
-
-</div>
-</div>
-
-<!-- MODAL -->
 <div id="modalOverlay" class="modal-overlay">
-<div id="modalBox" class="modal">
-<h3 id="modalTitle"></h3>
-<p id="modalMessage"></p>
-<button onclick="cerrarModal()">Aceptar</button>
-</div>
+    <div id="modalBox" class="modal">
+        <h3 id="modalTitle"></h3>
+        <p id="modalMessage"></p>
+        <button class="btn" onclick="cerrarModal()">Aceptar</button>
+    </div>
 </div>
 
 <script th:if="${errorMensaje != null}">
-    mostrarModal("Error", "[[${errorMensaje}]]", "error");
+    mostrarModal("Error", "[[${errorMensaje}]]");
 </script>
-
 </body>
 </html>
