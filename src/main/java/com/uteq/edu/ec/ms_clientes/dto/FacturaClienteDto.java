@@ -4,9 +4,12 @@ public class FacturaClienteDto {
 
     private Long id;
     private String nombre;
-    private String dni;
-    private String email;
+    private String apellido;
+    private String cedula;
+    private String correo;
     private String direccion;
+    private String estado;
+    private String telefono;
 
     public Long getId() {
         return id;
@@ -24,20 +27,28 @@ public class FacturaClienteDto {
         this.nombre = nombre;
     }
 
-    public String getDni() {
-        return dni;
+    public String getApellido() {
+        return apellido;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCedula() {
+        return cedula;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public String getDireccion() {
@@ -46,5 +57,21 @@ public class FacturaClienteDto {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 }

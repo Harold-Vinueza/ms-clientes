@@ -39,8 +39,8 @@ public class FacturaService {
 
             return facturas.stream()
                     .filter(f -> f.getCliente() != null)
-                    .filter(f -> f.getCliente().getDni() != null)
-                    .filter(f -> f.getCliente().getDni().trim().equals(cedula.trim()))
+                    .filter(f -> f.getCliente().getCedula() != null)
+                    .filter(f -> f.getCliente().getCedula().trim().equals(cedula.trim()))
                     .collect(Collectors.toList());
 
         } catch (Exception e) {

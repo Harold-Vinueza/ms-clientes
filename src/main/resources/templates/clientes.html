@@ -1321,7 +1321,7 @@
         </div>
     </div>
 
-    <!-- TAB ENTREGAS -->
+         <!-- TAB ENTREGAS -->
     <div id="tab-entregas" class="tab-panel">
         <div class="single-grid">
             <div class="card">
@@ -1370,29 +1370,29 @@
                     <table class="nice-table">
                         <thead>
                         <tr>
-                            <th>ID Factura</th>
+                            <th>Order ID</th>
                             <th>Cliente</th>
                             <th>Cédula</th>
                             <th>Correo</th>
-                            <th>Fecha</th>
-                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Tracking</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:if="${facturasEncontradas == null or #lists.isEmpty(facturasEncontradas)}">
+                        <tr th:if="${entregasEncontradas == null or #lists.isEmpty(entregasEncontradas)}">
                             <td colspan="6" style="text-align:center; padding:32px 16px; color:#6b7280; font-weight:700;">
                                 <i class="fa-solid fa-file-circle-xmark" style="margin-right:8px; color:#10b981;"></i>
-                                Aún no hay facturas cargadas. Consulta una cédula para visualizar resultados.
+                                Aún no hay entregas cargadas. Consulta una cédula para visualizar resultados.
                             </td>
                         </tr>
 
-                        <tr th:each="factura : ${facturasEncontradas}">
-                            <td th:text="${factura.id}"></td>
-                            <td th:text="${factura.cliente != null ? factura.cliente.nombre : ''}"></td>
-                            <td th:text="${factura.cliente != null ? factura.cliente.dni : ''}"></td>
-                            <td th:text="${factura.cliente != null ? factura.cliente.email : ''}"></td>
-                            <td th:text="${factura.fecha}"></td>
-                            <td th:text="${factura.total}"></td>
+                        <tr th:each="entrega : ${entregasEncontradas}">
+                            <td th:text="${entrega.orderId}"></td>
+                            <td th:text="${entrega.clientName}"></td>
+                            <td th:text="${entrega.clientCedula}"></td>
+                            <td th:text="${entrega.email}"></td>
+                            <td th:text="${entrega.status}"></td>
+                            <td th:text="${entrega.trackingNumber}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -1459,11 +1459,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:if="${facturasEncontradas == null or #lists.isEmpty(facturasEncontradas)}">
                             <td colspan="6" style="text-align:center; padding:32px 16px; color:#6b7280; font-weight:700;">
                                 <i class="fa-solid fa-file-circle-xmark" style="margin-right:8px; color:#10b981;"></i>
                                 Aún no hay facturas cargadas. Consulta una cédula para visualizar resultados.
                             </td>
+                        </tr>
+
+                        <tr th:each="factura : ${facturasEncontradas}">
+                            <td th:text="${factura.id}"></td>
+                            <td th:text="${factura.cliente != null ? factura.cliente.nombre : ''}"></td>
+                            <td th:text="${factura.cliente != null ? factura.cliente.cedula : ''}"></td>
+                            <td th:text="${factura.cliente != null ? factura.cliente.correo : ''}"></td>
+                            <td th:text="${factura.fecha}"></td>
+                            <td th:text="${factura.total}"></td>
                         </tr>
                         </tbody>
                     </table>
