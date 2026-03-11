@@ -6,15 +6,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.uteq.edu.ec.ms_clientes.service.EntregaService; // nuevo para el msentregas
 
 @Controller
 @RequestMapping("/clientes")
 public class ClienteController {
 
     private final ClienteService service;
+    private final EntregaService entregaService; // nuevo para el msentregas
 
-    public ClienteController(ClienteService service) {
+    public ClienteController(ClienteService service, EntregaService entregaService) {
         this.service = service;
+        this.entregaService = entregaService; // nuevo para el msentregas
     }
 
     // ======================
@@ -52,6 +55,7 @@ public class ClienteController {
         }
 
         model.addAttribute("clientes", service.listarClientes());
+        model.addAttribute("tabActiva", "tab-clientes");// nuevo para mantener la pestaña activa
 
         return "clientes";
     }
@@ -214,5 +218,24 @@ public class ClienteController {
         }
 
         return "redirect:/clientes/web";
+    }
+
+        // postman para obtener las entregas por cédula desde el msentregas
+    @PostMapping("/web/entregas")
+    public String buscarEntregasPorCedula(@RequestParam String cedulaEntrega, Model model) {
+        model.addAttribute("cliente", new Cliente());
+        model.addAttribute("clienteEncontrado", null);
+        model.addAttribute("mensajeBusqueda", null);
+        model.addAttribute("mensajeExito", null);
+        model.addAttribute("cedulaBusqueda", "");
+        model.addAttribute("busquedaRealizada", false);
+        model.addAttribute("mostrarFormularioRegistro", false);
+        model.addAttribute("clientes", service.listarClientes());
+
+        model.addAttribute("entregasEncontradas", entregaService.obtenerEntregasPorCedula(cedulaEntrega));
+        model.addAttribute("cedulaEntrega", cedulaEntrega);
+        model.addAttribute("tabActiva", "tab-entregas");
+
+        return "clientes";
     }
 }
