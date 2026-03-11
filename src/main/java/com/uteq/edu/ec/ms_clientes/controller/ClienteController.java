@@ -222,7 +222,9 @@ public class ClienteController {
 
         return "redirect:/clientes/web";
     }
-
+        // ======================
+        // ENTREGAS POR CÉDULA
+        // ======================
         // postman o método para obtener las entregas por cédula desde el msentregas
     @PostMapping("/web/entregas")
     public String buscarEntregasPorCedula(@RequestParam String cedulaEntrega, Model model) {
@@ -241,9 +243,13 @@ public class ClienteController {
 
         return "clientes";
     }
-
-    // postman o método para obtener las facturas por cédula desde el msfacturas    @PostMapping("/web/facturas")
+    // ======================
+    // FACTURAS POR CÉDULA
+    // ======================
+    // postman o método para obtener las facturas por cédula desde el msfacturas
+    @PostMapping("/web/facturas")
     public String buscarFacturasPorCedula(@RequestParam String cedulaFactura, Model model) {
+
         model.addAttribute("cliente", new Cliente());
         model.addAttribute("clienteEncontrado", null);
         model.addAttribute("mensajeBusqueda", null);
@@ -253,7 +259,9 @@ public class ClienteController {
         model.addAttribute("mostrarFormularioRegistro", false);
         model.addAttribute("clientes", service.listarClientes());
 
-        model.addAttribute("facturasEncontradas", facturaService.obtenerFacturasPorCedula(cedulaFactura));
+        model.addAttribute("facturasEncontradas",
+                facturaService.obtenerFacturasPorCedula(cedulaFactura));
+
         model.addAttribute("cedulaFactura", cedulaFactura);
         model.addAttribute("tabActiva", "tab-facturas");
 
