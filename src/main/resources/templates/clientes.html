@@ -34,8 +34,16 @@
             box-shadow:0 18px 35px rgba(0,0,0,0.18);
             display:flex;
             align-items:center;
+            justify-content:space-between;
             gap:18px;
             border-top:5px solid #16a34a;
+            flex-wrap:wrap;
+        }
+
+        .header-left{
+            display:flex;
+            align-items:center;
+            gap:18px;
         }
 
         .header-icon{
@@ -61,9 +69,82 @@
             background-clip:text;
         }
 
+        .header-subtitle{
+            margin-top:6px;
+            color:#6b7280;
+            font-size:14px;
+            font-weight:600;
+        }
+
+        .top-tabs{
+            display:flex;
+            flex-wrap:wrap;
+            gap:12px;
+            justify-content:flex-end;
+        }
+
+        .top-tab{
+            border:none;
+            cursor:pointer;
+            border-radius:16px;
+            padding:12px 18px;
+            background:linear-gradient(135deg,#f8fafc,#eef2f7);
+            color:#334155;
+            font-size:14px;
+            font-weight:800;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            box-shadow:0 8px 18px rgba(15,23,42,0.08);
+            border:1px solid #e5e7eb;
+            transition:all 0.25s ease;
+        }
+
+        .top-tab i{
+            color:#10b981;
+            font-size:16px;
+        }
+
+        .top-tab:hover{
+            transform:translateY(-2px);
+            box-shadow:0 12px 24px rgba(15,23,42,0.12);
+        }
+
+        .top-tab.active{
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+            color:#fff;
+            box-shadow:0 12px 24px rgba(22,163,74,0.28);
+            border-color:transparent;
+        }
+
+        .top-tab.active i{
+            color:#fff;
+        }
+
+        .tab-panel{
+            display:none;
+        }
+
+        .tab-panel.active{
+            display:block;
+        }
+
         .main-grid{
             display:grid;
             grid-template-columns:430px 1fr;
+            gap:24px;
+            align-items:start;
+        }
+
+        .single-grid{
+            display:grid;
+            grid-template-columns:1fr;
+            gap:24px;
+        }
+
+        .double-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
             gap:24px;
             align-items:start;
         }
@@ -220,7 +301,11 @@
         }
 
         .btn-save:hover{
-            box-shadow:0 10px 18px rgba(232,67,147,0.40);
+            box-shadow:0 10px 18px rgba(22,163,74,0.30);
+        }
+
+        .btn-cancel:hover{
+            box-shadow:0 10px 18px rgba(100,116,139,0.25);
         }
 
         .form-success{
@@ -418,6 +503,177 @@
             flex-wrap:wrap;
         }
 
+        .section-search{
+            display:grid;
+            grid-template-columns:1fr auto;
+            gap:12px;
+            align-items:end;
+        }
+
+        .status-chip{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:8px 12px;
+            border-radius:999px;
+            font-size:12px;
+            font-weight:800;
+            background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+            color:#047857;
+            border:1px solid #a7f3d0;
+        }
+
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:16px;
+            margin-bottom:24px;
+        }
+
+        .stat-card{
+            background:linear-gradient(135deg,#f0fdf4,#f8fffc);
+            border:1px solid #bbf7d0;
+            border-radius:20px;
+            padding:18px;
+            box-shadow:0 10px 20px rgba(16,185,129,0.08);
+        }
+
+        .stat-card-top{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:12px;
+        }
+
+        .stat-card-icon{
+            width:48px;
+            height:48px;
+            border-radius:16px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#fff;
+            font-size:18px;
+            background:linear-gradient(135deg,#16a34a,#2dd4bf);
+            box-shadow:0 10px 20px rgba(22,163,74,0.22);
+        }
+
+        .stat-card-label{
+            font-size:13px;
+            font-weight:800;
+            color:#6b7280;
+            text-transform:uppercase;
+            letter-spacing:.4px;
+        }
+
+        .stat-card-value{
+            font-size:28px;
+            font-weight:900;
+            color:#111827;
+        }
+
+        .table-card{
+            overflow:hidden;
+        }
+
+        .table-wrap{
+            width:100%;
+            overflow-x:auto;
+            border-radius:18px;
+            border:1px solid #d1fae5;
+            background:#fff;
+        }
+
+        .nice-table{
+            width:100%;
+            border-collapse:collapse;
+            min-width:760px;
+        }
+
+        .nice-table thead th{
+            background:linear-gradient(135deg,#166534,#10b981);
+            color:#fff;
+            text-align:left;
+            padding:15px 16px;
+            font-size:13px;
+            font-weight:800;
+            letter-spacing:.3px;
+            text-transform:uppercase;
+        }
+
+        .nice-table tbody td{
+            padding:14px 16px;
+            border-bottom:1px solid #ecfdf5;
+            font-size:14px;
+            color:#374151;
+            font-weight:600;
+            background:#fff;
+        }
+
+        .nice-table tbody tr:hover td{
+            background:#f0fdf4;
+        }
+
+        .summary-grid{
+            display:grid;
+            grid-template-columns:360px 1fr;
+            gap:24px;
+            align-items:start;
+        }
+
+        .info-stack{
+            display:grid;
+            gap:14px;
+        }
+
+        .summary-box{
+            background:linear-gradient(135deg,#f0fdf4,#f7fffe);
+            border:1px solid #bbf7d0;
+            border-radius:20px;
+            padding:18px;
+        }
+
+        .summary-box-title{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-size:16px;
+            font-weight:900;
+            color:#111827;
+            margin-bottom:16px;
+        }
+
+        .summary-box-title i{
+            color:#10b981;
+        }
+
+        .summary-list{
+            display:grid;
+            gap:12px;
+        }
+
+        .summary-list-item{
+            background:#fff;
+            border:1px solid #d1fae5;
+            border-radius:16px;
+            padding:14px 15px;
+        }
+
+        .summary-list-label{
+            font-size:12px;
+            font-weight:800;
+            color:#059669;
+            text-transform:uppercase;
+            margin-bottom:6px;
+        }
+
+        .summary-list-value{
+            color:#111827;
+            font-weight:700;
+            font-size:15px;
+            word-break:break-word;
+        }
+
         .modal-overlay{
             position:fixed;
             inset:0;
@@ -472,9 +728,34 @@
             background:linear-gradient(135deg,#16a34a,#2dd4bf);
         }
 
+        @media (max-width: 1180px){
+            .summary-grid,
+            .double-grid,
+            .stats-grid{
+                grid-template-columns:1fr 1fr;
+            }
+        }
+
         @media (max-width: 1100px){
-            .main-grid{
+            .main-grid,
+            .summary-grid,
+            .double-grid{
                 grid-template-columns:1fr;
+            }
+
+            .header{
+                justify-content:flex-start;
+            }
+
+            .top-tabs{
+                width:100%;
+                justify-content:flex-start;
+            }
+        }
+
+        @media (max-width: 820px){
+            .stats-grid{
+                grid-template-columns:1fr 1fr;
             }
         }
 
@@ -483,7 +764,9 @@
             .result-grid,
             .search-actions,
             .actions,
-            .result-actions-panel{
+            .result-actions-panel,
+            .section-search,
+            .stats-grid{
                 grid-template-columns:1fr;
             }
 
@@ -506,6 +789,15 @@
 
             .acciones-botones{
                 flex-direction:column;
+            }
+
+            .top-tab{
+                width:100%;
+                justify-content:center;
+            }
+
+            .header-left{
+                width:100%;
             }
         }
     </style>
@@ -676,6 +968,17 @@
             return true;
         }
 
+        function cambiarTab(tabId){
+            document.querySelectorAll(".top-tab").forEach(tab => tab.classList.remove("active"));
+            document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
+
+            const tabBoton = document.querySelector('.top-tab[data-tab="' + tabId + '"]');
+            const panel = document.getElementById(tabId);
+
+            if(tabBoton) tabBoton.classList.add("active");
+            if(panel) panel.classList.add("active");
+        }
+
         window.addEventListener("DOMContentLoaded", function(){
             const consumidorFinal = document.getElementById("consumidorFinal");
             const huboExito = document.getElementById("huboExito");
@@ -697,292 +1000,629 @@
                esModoEdicion && esModoEdicion.value === "false"){
                 limpiarFormularioCliente();
             }
+
+            cambiarTab("tab-clientes");
         });
     </script>
 </head>
 <body>
 <div class="page">
     <div class="header">
-        <div class="header-icon">
-            <i class="fa-solid fa-users"></i>
+        <div class="header-left">
+            <div class="header-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div>
+                <h1>Microservicio Clientes</h1>
+                <div class="header-subtitle">Gestión de clientes y consultar información relacionada.</div>
+            </div>
         </div>
-        <div>
-            <h1>Gestión de Clientes</h1>
+
+        <div class="top-tabs">
+            <button type="button" class="top-tab active" data-tab="tab-clientes" onclick="cambiarTab('tab-clientes')">
+                <i class="fa-solid fa-users"></i>
+                <span>Clientes</span>
+            </button>
+
+            <button type="button" class="top-tab" data-tab="tab-entregas" onclick="cambiarTab('tab-entregas')">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Entregas</span>
+            </button>
+
+            <button type="button" class="top-tab" data-tab="tab-facturas" onclick="cambiarTab('tab-facturas')">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Facturas</span>
+            </button>
+
+            <button type="button" class="top-tab" data-tab="tab-resumen" onclick="cambiarTab('tab-resumen')">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Resumen Cliente</span>
+            </button>
         </div>
     </div>
 
-    <div class="main-grid">
-        <div class="card">
-            <div class="card-head">
-                <div class="card-icon">
-                    <i class="fa-solid fa-user-plus"></i>
+    <!-- TAB CLIENTES -->
+    <div id="tab-clientes" class="tab-panel active">
+        <div class="main-grid">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <h3 th:text="${cliente.id == null ? 'Nuevo Cliente' : 'Editar Cliente'}"></h3>
+                        <p>Complete los datos del cliente solo si necesita registrarlo o editarlo.</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 th:text="${cliente.id == null ? 'Nuevo Cliente' : 'Editar Cliente'}"></h3>
-                    <p>Complete los datos del cliente solo si necesita registrarlo o editarlo.</p>
+
+                <input type="hidden" id="huboExito" th:value="${mensajeExito != null}">
+                <input type="hidden" id="modoEdicion" th:value="${cliente.id != null}">
+                <input type="hidden" id="huboClienteEncontrado" th:value="${clienteEncontrado != null}">
+
+                <div th:if="${mensajeExito != null}" class="form-success">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span th:text="${mensajeExito}"></span>
                 </div>
-            </div>
 
-            <input type="hidden" id="huboExito" th:value="${mensajeExito != null}">
-            <input type="hidden" id="modoEdicion" th:value="${cliente.id != null}">
-            <input type="hidden" id="huboClienteEncontrado" th:value="${clienteEncontrado != null}">
+                <div class="search-inside">
+                    <form th:action="@{/clientes/web/buscar}" method="post" onsubmit="return validarBusqueda()">
+                        <label class="label" for="cedulaBusqueda">
+                            <i class="fa-solid fa-address-card"></i> Buscar cliente por cédula
+                        </label>
 
-            <div th:if="${mensajeExito != null}" class="form-success">
-                <i class="fa-solid fa-circle-check"></i>
-                <span th:text="${mensajeExito}"></span>
-            </div>
+                        <input type="text"
+                               id="cedulaBusqueda"
+                               name="cedulaBusqueda"
+                               maxlength="10"
+                               th:value="${cedulaBusqueda}"
+                               placeholder="Ingrese la cédula para buscar"
+                               onkeydown="soloNumeros(event)"
+                               onpaste="limpiarPegadoSoloNumeros(event)">
 
-            <div class="search-inside">
-                <form th:action="@{/clientes/web/buscar}" method="post" onsubmit="return validarBusqueda()">
-                    <label class="label" for="cedulaBusqueda">
-                        <i class="fa-solid fa-address-card"></i> Buscar cliente por cédula
-                    </label>
+                        <div class="search-actions">
+                            <button type="submit" class="btn btn-search">
+                                <i class="fa-solid fa-magnifying-glass"></i> Buscar Cliente
+                            </button>
 
-                    <input type="text"
-                           id="cedulaBusqueda"
-                           name="cedulaBusqueda"
-                           maxlength="10"
-                           th:value="${cedulaBusqueda}"
-                           placeholder="Ingrese la cédula para buscar"
-                           onkeydown="soloNumeros(event)"
-                           onpaste="limpiarPegadoSoloNumeros(event)">
+                            <button type="button" class="btn btn-consumidor" onclick="activarConsumidorFinal()">
+                                <i class="fa-solid fa-user-check"></i> Consumidor Final
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-                    <div class="search-actions">
-                        <button type="submit" class="btn btn-search">
-                            <i class="fa-solid fa-magnifying-glass"></i> Buscar Cliente
+                <form th:action="@{/clientes/web/guardar}" th:object="${cliente}" method="post" onsubmit="return validarFormulario()">
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" id="consumidorFinal" name="consumidorFinal" th:value="${cliente.cedula == '9999999999'} ? 'true' : 'false'"/>
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label class="label" for="cedula">
+                                <i class="fa-solid fa-id-card"></i> Cédula
+                            </label>
+                            <input type="text"
+                                   id="cedula"
+                                   th:field="*{cedula}"
+                                   maxlength="10"
+                                   required
+                                   placeholder="Ingrese la cédula"
+                                   onkeydown="soloNumeros(event)"
+                                   onpaste="limpiarPegadoSoloNumeros(event)">
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="edad">
+                                <i class="fa-solid fa-hashtag"></i> Edad
+                            </label>
+                            <input type="number"
+                                   id="edad"
+                                   th:field="*{edad}"
+                                   min="0"
+                                   required
+                                   placeholder="Edad"
+                                   onkeydown="soloNumeros(event)"
+                                   onpaste="limpiarPegadoSoloNumeros(event)">
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="nombre">
+                                <i class="fa-solid fa-user"></i> Nombres
+                            </label>
+                            <input type="text"
+                                   id="nombre"
+                                   th:field="*{nombre}"
+                                   required
+                                   placeholder="Ingrese nombres"
+                                   onkeydown="soloLetras(event)"
+                                   onpaste="limpiarPegadoSoloLetras(event)">
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="apellido">
+                                <i class="fa-solid fa-user-tag"></i> Apellidos
+                            </label>
+                            <input type="text"
+                                   id="apellido"
+                                   th:field="*{apellido}"
+                                   required
+                                   placeholder="Ingrese apellidos"
+                                   onkeydown="soloLetras(event)"
+                                   onpaste="limpiarPegadoSoloLetras(event)">
+                        </div>
+
+                        <div class="field full">
+                            <label class="label" for="correo">
+                                <i class="fa-solid fa-envelope"></i> Correo
+                            </label>
+                            <input type="email"
+                                   id="correo"
+                                   th:field="*{correo}"
+                                   required
+                                   placeholder="Ingrese correo electrónico">
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="telefono">
+                                <i class="fa-solid fa-phone"></i> Celular - Teléfono
+                            </label>
+                            <input type="text"
+                                   id="telefono"
+                                   th:field="*{telefono}"
+                                   maxlength="10"
+                                   required
+                                   placeholder="Ingrese teléfono"
+                                   onkeydown="soloTelefono(event)"
+                                   onpaste="limpiarPegadoTelefono(event)">
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="direccion">
+                                <i class="fa-solid fa-location-dot"></i> Dirección
+                            </label>
+                            <input type="text"
+                                   id="direccion"
+                                   th:field="*{direccion}"
+                                   required
+                                   placeholder="Ingrese dirección">
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn btn-save">
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar
                         </button>
 
-                        <button type="button" class="btn btn-consumidor" onclick="activarConsumidorFinal()">
-                            <i class="fa-solid fa-user-check"></i> Consumidor Final
-                        </button>
+                        <a th:href="@{/clientes/web}" class="btn btn-cancel" onclick="limpiarFormularioCliente()">
+                            <i class="fa-solid fa-rotate-left"></i> Cancelar
+                        </a>
                     </div>
                 </form>
             </div>
 
-            <form th:action="@{/clientes/web/guardar}" th:object="${cliente}" method="post" onsubmit="return validarFormulario()">
-                <input type="hidden" th:field="*{id}"/>
-                <input type="hidden" id="consumidorFinal" name="consumidorFinal" th:value="${cliente.cedula == '9999999999'} ? 'true' : 'false'"/>
-
-                <div class="form-grid">
-                    <div class="field">
-                        <label class="label" for="cedula">
-                            <i class="fa-solid fa-id-card"></i> Cédula
-                        </label>
-                        <input type="text"
-                               id="cedula"
-                               th:field="*{cedula}"
-                               maxlength="10"
-                               required
-                               placeholder="Ingrese la cédula"
-                               onkeydown="soloNumeros(event)"
-                               onpaste="limpiarPegadoSoloNumeros(event)">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-address-card"></i>
                     </div>
-
-                    <div class="field">
-                        <label class="label" for="edad">
-                            <i class="fa-solid fa-hashtag"></i> Edad
-                        </label>
-                        <input type="number"
-                               id="edad"
-                               th:field="*{edad}"
-                               min="0"
-                               required
-                               placeholder="Edad"
-                               onkeydown="soloNumeros(event)"
-                               onpaste="limpiarPegadoSoloNumeros(event)">
-                    </div>
-
-                    <div class="field">
-                        <label class="label" for="nombre">
-                            <i class="fa-solid fa-user"></i> Nombres
-                        </label>
-                        <input type="text"
-                               id="nombre"
-                               th:field="*{nombre}"
-                               required
-                               placeholder="Ingrese nombres"
-                               onkeydown="soloLetras(event)"
-                               onpaste="limpiarPegadoSoloLetras(event)">
-                    </div>
-
-                    <div class="field">
-                        <label class="label" for="apellido">
-                            <i class="fa-solid fa-user-tag"></i> Apellidos
-                        </label>
-                        <input type="text"
-                               id="apellido"
-                               th:field="*{apellido}"
-                               required
-                               placeholder="Ingrese apellidos"
-                               onkeydown="soloLetras(event)"
-                               onpaste="limpiarPegadoSoloLetras(event)">
-                    </div>
-
-                    <div class="field full">
-                        <label class="label" for="correo">
-                            <i class="fa-solid fa-envelope"></i> Correo
-                        </label>
-                        <input type="email"
-                               id="correo"
-                               th:field="*{correo}"
-                               required
-                               placeholder="Ingrese correo electrónico">
-                    </div>
-
-                    <div class="field">
-                        <label class="label" for="telefono">
-                            <i class="fa-solid fa-phone"></i> Celular - Teléfono
-                        </label>
-                        <input type="text"
-                               id="telefono"
-                               th:field="*{telefono}"
-                               maxlength="10"
-                               required
-                               placeholder="Ingrese teléfono"
-                               onkeydown="soloTelefono(event)"
-                               onpaste="limpiarPegadoTelefono(event)">
-                    </div>
-
-                    <div class="field">
-                        <label class="label" for="direccion">
-                            <i class="fa-solid fa-location-dot"></i> Dirección
-                        </label>
-                        <input type="text"
-                               id="direccion"
-                               th:field="*{direccion}"
-                               required
-                               placeholder="Ingrese dirección">
+                    <div>
+                        <h3>Resultado de búsqueda</h3>
                     </div>
                 </div>
 
-                <div class="actions">
-                    <button type="submit" class="btn btn-save">
-                        <i class="fa-solid fa-floppy-disk"></i> Guardar
-                    </button>
-
-                    <a th:href="@{/clientes/web}" class="btn btn-cancel" onclick="limpiarFormularioCliente()">
-                        <i class="fa-solid fa-rotate-left"></i> Cancelar
-                    </a>
-                </div>
-            </form>
-        </div>
-
-        <div class="card">
-            <div class="card-head">
-                <div class="card-icon">
-                    <i class="fa-solid fa-address-card"></i>
-                </div>
-                <div>
-                    <h3>Resultado de búsqueda</h3>
-                </div>
-            </div>
-
-            <div th:if="${clienteEncontrado != null}" class="result-box">
-                <div class="result-banner result-success">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span>Cliente encontrado correctamente.</span>
-                </div>
-
-                <div class="result-grid">
-                    <div class="result-item">
-                        <div class="result-label">ID</div>
-                        <div class="result-value" th:text="${clienteEncontrado.id}"></div>
+                <div th:if="${clienteEncontrado != null}" class="result-box">
+                    <div class="result-banner result-success">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Cliente encontrado correctamente.</span>
                     </div>
 
-                    <div class="result-item">
-                        <div class="result-label">CÉDULA</div>
-                        <div class="result-value" th:text="${clienteEncontrado.cedula}"></div>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">ID</div>
+                            <div class="result-value" th:text="${clienteEncontrado.id}"></div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">CÉDULA</div>
+                            <div class="result-value" th:text="${clienteEncontrado.cedula}"></div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">NOMBRES</div>
+                            <div class="result-value" th:text="${clienteEncontrado.nombre}"></div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">APELLIDOS</div>
+                            <div class="result-value" th:text="${clienteEncontrado.apellido}"></div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">EDAD</div>
+                            <div class="result-value" th:text="${clienteEncontrado.edad}"></div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">ESTADO</div>
+                            <div class="result-value" th:text="${clienteEncontrado.estado}"></div>
+                        </div>
+
+                        <div class="result-item full">
+                            <div class="result-label">CORREO</div>
+                            <div class="result-value" th:text="${clienteEncontrado.correo}"></div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">CELULAR / TELÉFONO</div>
+                            <div class="result-value" th:text="${clienteEncontrado.telefono}"></div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">FECHA DE REGISTRO</div>
+                            <div class="result-value"
+                                 th:text="${#temporals.format(clienteEncontrado.fechaRegistro,'dd/MM/yyyy HH:mm')}"></div>
+                        </div>
+
+                        <div class="result-item full">
+                            <div class="result-label">DIRECCIÓN</div>
+                            <div class="result-value" th:text="${clienteEncontrado.direccion}"></div>
+                        </div>
                     </div>
 
-                    <div class="result-item">
-                        <div class="result-label">NOMBRES</div>
-                        <div class="result-value" th:text="${clienteEncontrado.nombre}"></div>
-                    </div>
+                    <div class="result-actions-panel">
+                        <div class="result-actions-box">
+                            <div class="result-actions-title">Estado</div>
+                            <form th:action="@{/clientes/web/estado/{id}(id=${clienteEncontrado.id})}" method="post" class="estado-form">
+                                <select name="estado">
+                                    <option value="ACTIVO" th:selected="${clienteEncontrado.estado == 'ACTIVO'}">ACTIVO</option>
+                                    <option value="INACTIVO" th:selected="${clienteEncontrado.estado == 'INACTIVO'}">INACTIVO</option>
+                                </select>
+                                <button type="submit" class="btn btn-state">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </form>
+                        </div>
 
-                    <div class="result-item">
-                        <div class="result-label">APELLIDOS</div>
-                        <div class="result-value" th:text="${clienteEncontrado.apellido}"></div>
-                    </div>
-
-                    <div class="result-item">
-                        <div class="result-label">EDAD</div>
-                        <div class="result-value" th:text="${clienteEncontrado.edad}"></div>
-                    </div>
-
-                    <div class="result-item">
-                        <div class="result-label">ESTADO</div>
-                        <div class="result-value" th:text="${clienteEncontrado.estado}"></div>
-                    </div>
-
-                    <div class="result-item full">
-                        <div class="result-label">CORREO</div>
-                        <div class="result-value" th:text="${clienteEncontrado.correo}"></div>
-                    </div>
-
-                    <div class="result-item">
-                        <div class="result-label">CELULAR / TELÉFONO</div>
-                        <div class="result-value" th:text="${clienteEncontrado.telefono}"></div>
-                    </div>
-
-                    <div class="result-item">
-                        <div class="result-label">FECHA DE REGISTRO</div>
-                        <div class="result-value"
-                             th:text="${#temporals.format(clienteEncontrado.fechaRegistro,'dd/MM/yyyy HH:mm')}"></div>
-                    </div>
-
-                    <div class="result-item full">
-                        <div class="result-label">DIRECCIÓN</div>
-                        <div class="result-value" th:text="${clienteEncontrado.direccion}"></div>
-                    </div>
-                </div>
-
-                <div class="result-actions-panel">
-                    <div class="result-actions-box">
-                        <div class="result-actions-title">Estado</div>
-                        <form th:action="@{/clientes/web/estado/{id}(id=${clienteEncontrado.id})}" method="post" class="estado-form">
-                            <select name="estado">
-                                <option value="ACTIVO" th:selected="${clienteEncontrado.estado == 'ACTIVO'}">ACTIVO</option>
-                                <option value="INACTIVO" th:selected="${clienteEncontrado.estado == 'INACTIVO'}">INACTIVO</option>
-                            </select>
-                            <button type="submit" class="btn btn-state">
-                                <i class="fa-solid fa-check"></i>
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="result-actions-box">
-                        <div class="result-actions-title">Acciones</div>
-                        <div class="acciones-botones">
-                            <a th:href="@{/clientes/web/editar/{id}(id=${clienteEncontrado.id})}" class="btn btn-edit">
-                                Editar
-                            </a>
-                            <a th:href="@{/clientes/web/eliminar/{id}(id=${clienteEncontrado.id})}"
-                               class="btn btn-delete"
-                               onclick="return confirm('¿Está seguro de eliminar este cliente?')">
-                                Eliminar
-                            </a>
+                        <div class="result-actions-box">
+                            <div class="result-actions-title">Acciones</div>
+                            <div class="acciones-botones">
+                                <a th:href="@{/clientes/web/editar/{id}(id=${clienteEncontrado.id})}" class="btn btn-edit">
+                                    Editar
+                                </a>
+                                <a th:href="@{/clientes/web/eliminar/{id}(id=${clienteEncontrado.id})}"
+                                   class="btn btn-delete"
+                                   onclick="return confirm('¿Está seguro de eliminar este cliente?')">
+                                    Eliminar
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div th:if="${clienteEncontrado == null and busquedaRealizada}" class="result-box">
-                <div class="result-banner result-warning">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span th:text="${mensajeBusqueda != null ? mensajeBusqueda : 'Cliente no encontrado.'}"></span>
+                <div th:if="${clienteEncontrado == null and busquedaRealizada}" class="result-box">
+                    <div class="result-banner result-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span th:text="${mensajeBusqueda != null ? mensajeBusqueda : 'Cliente no encontrado.'}"></span>
+                    </div>
+
+                    <div class="result-empty">
+                        <i class="fa-solid fa-user-xmark"></i>
+                        <h4>Cliente no encontrado</h4>
+                        <p>La cédula consultada no existe en la base de datos. Puede registrar el cliente usando el formulario de la izquierda.</p>
+                    </div>
                 </div>
 
-                <div class="result-empty">
-                    <i class="fa-solid fa-user-xmark"></i>
-                    <h4>Cliente no encontrado</h4>
-                    <p>La cédula consultada no existe en la base de datos. Puede registrar el cliente usando el formulario de la izquierda.</p>
+                <div th:if="${clienteEncontrado == null and !busquedaRealizada}" class="result-empty">
+                    <i class="fa-solid fa-id-badge"></i>
+                    <h4>Esperando búsqueda</h4>
+                    <p>Ingrese una cédula para consultar la información del cliente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB ENTREGAS -->
+    <div id="tab-entregas" class="tab-panel">
+        <div class="single-grid">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div>
+                        <h3>Entregas por cliente</h3>
+                    </div>
+                </div>
+
+                <div class="section-search">
+                    <div>
+                        <label class="label" for="cedulaEntrega">
+                            <i class="fa-solid fa-address-card"></i> Buscar entregas por cédula
+                        </label>
+                        <input type="text"
+                               id="cedulaEntrega"
+                               maxlength="10"
+                               placeholder="Ingrese la cédula del cliente"
+                               onkeydown="soloNumeros(event)"
+                               onpaste="limpiarPegadoSoloNumeros(event)">
+                    </div>
+
+                    <button type="button" class="btn btn-search">
+                        <i class="fa-solid fa-magnifying-glass"></i> Consultar Entregas
+                    </button>
                 </div>
             </div>
 
-            <div th:if="${clienteEncontrado == null and !busquedaRealizada}" class="result-empty">
-                <i class="fa-solid fa-id-badge"></i>
-                <h4>Esperando búsqueda</h4>
-                <p>Ingrese una cédula para consultar la información del cliente.</p>
+            <div class="card table-card">
+                <div class="card-head">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div>
+                        <h3>Listado de entregas</h3>
+                        <p>Aquí se mostrarán las entregas encontradas del cliente consultado.</p>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="nice-table">
+                        <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Dirección</th>
+                            <th>Estado</th>
+                            <th>Tracking</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding:32px 16px; color:#6b7280; font-weight:700;">
+                                <i class="fa-solid fa-truck" style="margin-right:8px; color:#10b981;"></i>
+                                Aún no hay datos cargados. Consulta una cédula para visualizar las entregas.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB FACTURAS -->
+    <div id="tab-facturas" class="tab-panel">
+        <div class="single-grid">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                    <div>
+                        <h3>Facturas por cliente</h3>
+                    </div>
+                </div>
+
+                <div class="section-search">
+                    <div>
+                        <label class="label" for="cedulaFactura">
+                            <i class="fa-solid fa-address-card"></i> Buscar facturas por cédula
+                        </label>
+                        <input type="text"
+                               id="cedulaFactura"
+                               maxlength="10"
+                               placeholder="Ingrese la cédula del cliente"
+                               onkeydown="soloNumeros(event)"
+                               onpaste="limpiarPegadoSoloNumeros(event)">
+                    </div>
+
+                    <button type="button" class="btn btn-search">
+                        <i class="fa-solid fa-receipt"></i> Consultar Facturas
+                    </button>
+                </div>
+            </div>
+
+            <div class="card table-card">
+                <div class="card-head">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <div>
+                        <h3>Historial de facturas</h3>
+                        <p>Aquí se mostrarán las facturas encontradas para el cliente consultado.</p>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="nice-table">
+                        <thead>
+                        <tr>
+                            <th>ID Factura</th>
+                            <th>Cliente</th>
+                            <th>Cédula</th>
+                            <th>Correo</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding:32px 16px; color:#6b7280; font-weight:700;">
+                                <i class="fa-solid fa-file-circle-xmark" style="margin-right:8px; color:#10b981;"></i>
+                                Aún no hay facturas cargadas. Consulta una cédula para visualizar resultados.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB RESUMEN -->
+    <div id="tab-resumen" class="tab-panel">
+        <div class="single-grid">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <h3>Resumen completo del cliente</h3>
+                    </div>
+                </div>
+
+                <div class="section-search">
+                    <div>
+                        <label class="label" for="cedulaResumen">
+                            <i class="fa-solid fa-id-card"></i> Consultar resumen por cédula
+                        </label>
+                        <input type="text"
+                               id="cedulaResumen"
+                               maxlength="10"
+                               placeholder="Ingrese la cédula del cliente"
+                               onkeydown="soloNumeros(event)"
+                               onpaste="limpiarPegadoSoloNumeros(event)">
+                    </div>
+
+                    <button type="button" class="btn btn-search">
+                        <i class="fa-solid fa-chart-column"></i> Generar Resumen
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">Cliente</span>
+                        <div class="stat-card-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">--</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">Entregas</span>
+                        <div class="stat-card-icon">
+                            <i class="fa-solid fa-truck"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">Facturas</span>
+                        <div class="stat-card-icon">
+                            <i class="fa-solid fa-file-invoice"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <span class="stat-card-label">Monto Total</span>
+                        <div class="stat-card-icon">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card-value">$0.00</div>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <div class="info-stack">
+                    <div class="summary-box">
+                        <div class="summary-box-title">
+                            <i class="fa-solid fa-id-badge"></i>
+                            <span>Datos del cliente</span>
+                        </div>
+
+                        <div class="summary-list">
+                            <div class="summary-list-item">
+                                <div class="summary-list-label">Cédula</div>
+                                <div class="summary-list-value">Sin consulta</div>
+                            </div>
+                            <div class="summary-list-item">
+                                <div class="summary-list-label">Nombre completo</div>
+                                <div class="summary-list-value">Sin consulta</div>
+                            </div>
+                            <div class="summary-list-item">
+                                <div class="summary-list-label">Correo</div>
+                                <div class="summary-list-value">Sin consulta</div>
+                            </div>
+                            <div class="summary-list-item">
+                                <div class="summary-list-label">Teléfono</div>
+                                <div class="summary-list-value">Sin consulta</div>
+                            </div>
+                            <div class="summary-list-item">
+                                <div class="summary-list-label">Estado</div>
+                                <div class="summary-list-value">
+                                    <span class="status-chip">
+                                        <i class="fa-solid fa-circle-info"></i> Pendiente
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-stack">
+                    <div class="summary-box">
+                        <div class="summary-box-title">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <span>Últimas entregas</span>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table class="nice-table">
+                                <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Tracking</th>
+                                    <th>Estado</th>
+                                    <th>Dirección</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="text-align:center; padding:26px 16px; color:#6b7280; font-weight:700;">
+                                        Aún sin resultados en resumen.
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-box-title">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                            <span>Últimas facturas</span>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table class="nice-table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td colspan="3" style="text-align:center; padding:26px 16px; color:#6b7280; font-weight:700;">
+                                        Aún sin resultados en resumen.
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
