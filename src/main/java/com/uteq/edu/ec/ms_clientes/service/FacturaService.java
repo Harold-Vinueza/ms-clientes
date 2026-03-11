@@ -23,27 +23,28 @@ public class FacturaService {
     }
 
     public List<FacturaDto> obtenerFacturasPorCedula(String cedula) {
-        try {
-            ResponseEntity<List<FacturaDto>> response = restTemplate.exchange(
-                    URL_FACTURAS,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<FacturaDto>>() {}
-            );
+    try {
+        ResponseEntity<List<FacturaDto>> response = restTemplate.exchange(
+                URL_FACTURAS,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<FacturaDto>>() {}
+        );
 
-            List<FacturaDto> facturas = response.getBody();
+        List<FacturaDto> facturas = response.getBody();
 
-            if (facturas == null) {
-                return Collections.emptyList();
-            }
+        if (facturas == null) {
+            return Collections.emptyList();
+        }
 
-            return facturas.stream()
-                    .filter(f -> f.getCliente() != null)
-                    .filter(f -> f.getCliente().getDni() != null)
-                    .filter(f -> f.getCliente().getDni().trim().equals(cedula.trim()))
-                    .collect(Collectors.toList());
+        return facturas.stream()
+                .filter(f -> f.getCliente() != null)
+                .filter(f -> f.getCliente().getDni() != null)
+                .filter(f -> f.getCliente().getDni().trim().equals(cedula.trim()))
+                .collect(Collectors.toList());
 
         } catch (Exception e) {
+            e.printStackTrace();
             return Collections.emptyList();
         }
     }
