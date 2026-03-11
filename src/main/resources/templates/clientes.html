@@ -1353,7 +1353,6 @@
                         <i class="fa-solid fa-magnifying-glass"></i> Consultar Entregas
                     </button>
                 </form>
-
             </div>
 
             <div class="card table-card">
@@ -1398,8 +1397,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -1436,7 +1433,6 @@
                         <i class="fa-solid fa-receipt"></i> Consultar Facturas
                     </button>
                 </form>
-
             </div>
 
             <div class="card table-card">
@@ -1481,7 +1477,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
@@ -1518,7 +1513,6 @@
                         <i class="fa-solid fa-chart-column"></i> Generar Resumen
                     </button>
                 </form>
-
             </div>
 
             <div class="stats-grid">
@@ -1559,10 +1553,9 @@
                             <i class="fa-solid fa-dollar-sign"></i>
                         </div>
                     </div>
-                    <div class="stat-card-value" th:text="${'$' + (montoTotalFacturado != null ? montoTotalFacturado : 0)}">$0.00</div>
+                    <div class="stat-card-value" th:text="'$' + ${montoTotalFacturado != null ? montoTotalFacturado : 0}">$0.00</div>
                 </div>
             </div>
-
 
             <div class="summary-grid">
                 <div class="info-stack">
