@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: msclientes
       POSTGRES_USER: Harolito
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_PASSWORD: 123456
       TZ: America/Guayaquil
     ports:
       - "5432:5432"
@@ -28,7 +28,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/msclientes
       SPRING_DATASOURCE_USERNAME: Harolito
-      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_PASSWORD: 123456
     depends_on:
       - postgres
     networks:
